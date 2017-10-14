@@ -8,14 +8,25 @@ use App\Post;
 
 class PostsController extends Controller
 {
-    public function index()
+
+    public function __construct()
+
     {
-    	return view('posts.index');
+
+        $this->middleware('auth')->except(['index','show']);
+
     }
 
-    public function show()
+    public function index()
     {
-    	return view('posts.show');
+    	$posts = Post::latest()->get();
+    	return view('posts.index', compact('posts'));
+    }
+
+    public function show(Post $post)
+    {
+    	//$post = Post::find($id);
+    	return view('posts.show', compact('post'));
     }
 
     public function create()
@@ -30,7 +41,9 @@ class PostsController extends Controller
     		'body' => 'required'
     	]);
 
-    	Post::create(request(['title', 'body']));
+        auth()->user()->publish(
+            new Post(request(['title', 'body']))
+        );
 
     	//redirect to the home page
     	return redirect('/');
