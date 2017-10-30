@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Post;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -14,6 +15,7 @@ class ExampleTest extends TestCase
      */
     public function testBasicTest()
     {
-        $this->assertTrue(true);
+        $this->get('/')->assertSee('The Bootstrap Blog');
+        //$this->assertCount(true);
     }
 }
